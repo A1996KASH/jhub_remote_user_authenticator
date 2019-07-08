@@ -6,20 +6,20 @@ from jupyterhub.auth import LocalAuthenticator
 from jupyterhub.utils import url_path_join
 from tornado import gen, web
 from traitlets import Unicode
+import jwt
 
 
 class RemoteUserLoginHandler(BaseHandler):
 
     def get(self):
-        header_name = self.authenticator.header_name
-        remote_user = self.request.headers.get(header_name, "")
-        if remote_user == "":
-            raise web.HTTPError(401)
-
-        user = self.user_from_username(remote_user)
-        self.set_login_cookie(user)
-        next_url = self.get_next_url(user)
-        self.redirect(next_url)
+        remote_user = self.get_argument('user',None, True)
+        if remote_user == "" or remote_user is None:
+            self.redirect("http://www.zeblok.com")
+        else:
+            decoded = jwt.decode(remote_user, 'aIOllgUiJQ', algorithms='HS256')
+            user = self.user_from_username(decoded['user']['email'])
+            self.set_login_cookie(user)
+            self.redirect(url_path_join(self.hub.server.base_url, 'home'))
 
 
 class RemoteUserAuthenticator(Authenticator):
