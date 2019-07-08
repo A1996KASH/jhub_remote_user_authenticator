@@ -7,7 +7,7 @@ from jupyterhub.utils import url_path_join
 from tornado import gen, web
 from traitlets import Unicode
 import jwt
-
+import os
 
 class RemoteUserLoginHandler(BaseHandler):
 
@@ -17,7 +17,7 @@ class RemoteUserLoginHandler(BaseHandler):
             self.redirect("http://www.zeblok.com")
         else:
             decoded = jwt.decode(
-                remote_user, 'jwtsecret123', algorithms='HS256')
+                remote_user, os.environ['AUTH_KEY'], algorithms='HS256')
             user = self.user_from_username(decoded['user']['email'])
             self.set_login_cookie(user)
             self.redirect(url_path_join(self.hub.server.base_url, 'home'))
