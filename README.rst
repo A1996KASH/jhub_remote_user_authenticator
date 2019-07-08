@@ -12,7 +12,7 @@ Architecture and Security Recommendations
 This type of authentication relies on an HTTP header, and a malicious
 client could spoof the REMOTE_USER header.  The recommended architecture for this
 type of authentication requires that an authenticating proxy be placed in front
-of your Jupyterhub.  Your Jupyerhub should **only** be accessible from the proxy
+of your Jupyterhueb.  Your Jupyerhub should **only** be accessible from the proxy
 and **never** directly accessible by a client.  
 
 This type of access is typically enforced with network access controls.  E.g. in
