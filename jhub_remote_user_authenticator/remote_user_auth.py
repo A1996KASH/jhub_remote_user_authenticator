@@ -18,7 +18,7 @@ class RemoteUserLoginHandler(BaseHandler):
         else:
             decoded = jwt.decode(
                 remote_user, os.environ['AUTH_KEY'], algorithms='HS256')
-            user = self.user_from_username(decoded['user']['email'])
+            user = self.user_from_username(decoded['user']['username'])
             self.set_login_cookie(user)
             self.redirect(url_path_join(self.hub.server.base_url, 'home'))
 
