@@ -14,7 +14,7 @@ class RemoteUserLoginHandler(BaseHandler):
     def get(self):
         remote_user = self.get_argument('user',None, True)
         if remote_user == "" or remote_user is None:
-            self.redirect("http://www.zeblok.com")
+            self.redirect(os.environ['REDIRECT_URL'])
         else:
             decoded = jwt.decode(
                 remote_user, os.environ['AUTH_KEY'], algorithms='HS256')
